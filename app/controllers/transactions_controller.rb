@@ -15,15 +15,15 @@ class TransactionsController < ApplicationController
     render json: Transaction.create(transactions_params)
   end
 
-  # def create
-  #   transaction = Transaction.new(
-  #     payer: params[:payer],
-  #     points: params[:points],
-  #     timestamp: params[:timestamp],
-  #   )
-  #   transaction.save
-  #   render json: transaction.as_json
-  # end
+  def create
+    transaction = Transaction.new(
+      payer: params[:payer],
+      points: params[:points],
+      timestamp: params[:timestamp],
+    )
+    transaction.save
+    render json: transaction.as_json
+  end
 
   # def create
   #   payer = find_or_create_payer(payer: params[:payer])
@@ -58,6 +58,7 @@ class TransactionsController < ApplicationController
           break
         end
       end
+
       result = []
 
       points_spent.each do |k, v|
@@ -83,6 +84,6 @@ class TransactionsController < ApplicationController
   private
 
   def transactions_params
-    params.require(:transaction).permit(:payer, :points, :timestamp)
+    params.require(:transactions).permit(:payer, :points, :timestamp)
   end
 end
