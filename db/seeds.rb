@@ -5,3 +5,4 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+Transaction.create!([payer: "Dannon", points: 1000, timestamp: "2020-11-02T14:00:00Z"])
