@@ -1,9 +1,14 @@
 ### Transactions Index
 GET http://localhost:3000/transactions.json
 
-### Spend
-POST http://localhost:3000/transactions.json 
+###Transactions Create
+POST http://localhost:3000/transactions.json
 Content-Type: application/json
+{
+  "payer": "Test",
+  "points": 0,
+  "timestamp": "2020-10-31T10:00:00Z"
+}
 
 ### Payers Index
 GET http://localhost:3000/payers.json
