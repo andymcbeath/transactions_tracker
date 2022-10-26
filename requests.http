@@ -1,2 +1,3 @@
-
+### Transactions Index
+GET http://localhost:3000/transactions.json
 
