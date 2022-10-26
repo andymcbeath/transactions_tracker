@@ -1,3 +1,9 @@
 ### Transactions Index
 GET http://localhost:3000/transactions.json
 
+### Spend
+POST http://localhost:3000/transactions.json 
+Content-Type: application/json
+
+### Payers Index
+GET http://localhost:3000/payers.json
