@@ -4,33 +4,33 @@ class TransactionsController < ApplicationController
     render json: transactions.as_json
   end
 
-  # def create
-  #   transaction = Transaction.new(
-  #     payer: params[:payer],
-  #     points: params[:points],
-  #     timestamp: params[:timestamp],
-  #   )
-  #   transaction.save
-  #   render json: transaction.as_json
-  # end
-
   def create
-    payer = find_or_create_payer(name: params[:payer])
-    points = params[:points].to_i
-
-    #create transaction
-    transaction = Transaction.new(points: params[:points], payer: params[:payer], timestamp: params[:timestamp])
-
-    #Adjust points based on transaction IF balance doesn't go negative
-    if (payer.points + points >= 0)
-      payer.save!
-      transaction.save!
-      payer.update(points: payer.points + points)
-      render json: transaction
-    else
-      render json: "Transaction will make payer balance go negative. Transaction Cancelled."
-    end
+    transaction = Transaction.new(
+      payer: params[:payer],
+      points: params[:points],
+      timestamp: params[:timestamp],
+    )
+    transaction.save
+    render json: transaction.as_json
   end
+
+  # def create
+  #   payer = find_or_create_payer(payer: params[:payer])
+  #   points = params[:points].to_i
+
+  #   #create transaction
+  #   transaction = Transaction.new(points: params[:points], payer: params[:payer], timestamp: params[:timestamp])
+
+  #   #Adjust points based on transaction IF balance doesn't go negative
+  #   if (payer.points + points >= 0)
+  #     payer.save!
+  #     transaction.save!
+  #     payer.update(points: payer.points + points)
+  #     render json: transaction
+  #   else
+  #     render json: "Transaction will make payer balance go negative. Transaction Cancelled."
+  #   end
+  # end
 
   def spend
     points_left = params[:points].to_i
@@ -59,5 +59,13 @@ class TransactionsController < ApplicationController
   def show
     transaction = Transaction.find_by(id: params[:id])
     render json: transaction.as_json
+  end
+
+  def find_or_create_payer(payer)
+    if Payer.find_by(payer: payer) != nil
+      Payer.find_by(payer: payer)
+    else
+      Payer.new(payer: payer, points: 0, spent: 0)
+    end
   end
 end

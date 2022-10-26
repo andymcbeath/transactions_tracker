@@ -7,3 +7,6 @@ Content-Type: application/json
 
 ### Payers Index
 GET http://localhost:3000/payers.json
+
+### Transactions Show
+GET http://localhost:3000/transactions/1.json
