@@ -1,7 +1,14 @@
 class TransactionsController < ApplicationController
   def index
-    transactions = Transaction.all
-    render json: transactions.as_json
+    group_of_payers = Transaction.select(:payer, "SUM(points) as points").group(:payer)
+
+    results = {}
+
+    group_of_payers.each do |group|
+      results[group.payer] = group.points
+    end
+
+    render json: results.as_json
   end
 
   def create
@@ -60,20 +67,22 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def transactions_params
-    params.require(:transactions).permit(:payer, :points, :timestamp)
-  end
-
   def show
     transaction = Transaction.find_by(id: params[:id])
     render json: transaction.as_json
   end
 
-  def find_or_create_payer(payer)
-    if Payer.find_by(payer: payer) != nil
-      Payer.find_by(payer: payer)
-    else
-      Payer.new(payer: payer, points: 0, spent: 0)
-    end
+  # def find_or_create_payer(payer)
+  #   if Payer.find_by(payer: payer) != nil
+  #     Payer.find_by(payer: payer)
+  #   else
+  #     Payer.new(payer: payer, points: 0, spent: 0)
+  #   end
+  # end
+
+  private
+
+  def transactions_params
+    params.require(:transaction).permit(:payer, :points, :timestamp)
   end
 end
