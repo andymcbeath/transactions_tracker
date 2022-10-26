@@ -14,14 +14,14 @@ class TransactionsController < ApplicationController
     render json: transaction.as_json
   end
 
-  def update
+  def spend
     points_left = params[:points].to_i
     points_spent = {}
     if Transaction.pluck(:points).sum > points_left
       Transaction.order(timestamp: :asc).each do |transaction|
         if transaction.points < points_left
           points_left -= transaction.points
-          points_spent[transaction.payer] = (points_spent[transaction.payer] || 0) - trnsaction.points
+          points_spent[transaction.payer] = (points_spent[transaction.payer] || 0) - transaction.points
           transaction.destroy
         else
           points_spent[transaction.payer] = (points_spent[transaction.payer] || 0) - points_left
